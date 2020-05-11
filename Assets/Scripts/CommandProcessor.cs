@@ -6,9 +6,12 @@ using UnityEngine;
 
 public class CommandProcessor : MonoBehaviour
 {
-    private List<List<Command>> Commands = new List<List<Command>>();
+    public List<List<Command>> Commands = new List<List<Command>>();
     private Player MyPlayer;
+    [SerializeField]
     private bool Automated;
+    [SerializeField]
+    private int CommandListSize;
 
     private void Start()
     {
@@ -37,6 +40,18 @@ public class CommandProcessor : MonoBehaviour
             }
             Commands.Remove(Commands[0]);
         }
+    }
+
+    public void ConfirmCommandsForSelf()
+    {
+        foreach (List<Command> a in Commands)
+        {
+            foreach (Command b in a)
+            {
+                b.Player = MyPlayer;
+            }
+        }
+        CommandListSize = Commands.Count;
     }
 
     private void FixedUpdate()

@@ -28,7 +28,11 @@ public class Player : Damageable, IPlayer
     private Collider2D FrontWallDetectTrigger;
     [SerializeField]
     private Collider2D BackWallDetectTrigger;
+    [SerializeField]
+    public Collider2D BodyCollider;
 
+    [SerializeField]
+    private GameObject DyingBurst;
     
     private Collider2D[] GroundHitResults = new Collider2D[16];
     private Collider2D[] LeftWallHitResults = new Collider2D[16];
@@ -37,11 +41,16 @@ public class Player : Damageable, IPlayer
     private InputHandler MyInput;
     private CommandProcessor MyCP;
     private Rigidbody2D rigidbody;
+    
 
 
     public bool CurrentPlaythrough;
+    public PlayerManager Manager;
     private int ExtraJumps = 0;
     bool facingRight;
+    private bool AttackingPreviousUpdate;
+    [SerializeField]
+    private Gun MyGun;
 
     Rigidbody2D IPlayer.rigidbody { get => rigidbody; }
     float IPlayer.Speed { get { return Speed; }}
@@ -50,6 +59,7 @@ public class Player : Damageable, IPlayer
 
     private void Awake()
     {
+        AttackingPreviousUpdate = false;
         facingRight = true;
         if (GetComponent<InputHandler>() != false)
         {
@@ -102,13 +112,16 @@ public class Player : Damageable, IPlayer
                     }
                 }
             }
+            if (MyInput.ReadAttack() != AttackingPreviousUpdate)
+            {
+                var ShootCommand = new ShootCommand(this, MyInput.ReadAttack());
+                CommandsThisUpdate.Add(ShootCommand);
+            }
 
+            AttackingPreviousUpdate = MyInput.ReadAttack();
             MyCP.ManualExecuteCommand(CommandsThisUpdate);
         }
-        else
-        {
 
-        }
     }
 
 
@@ -149,6 +162,43 @@ public class Player : Damageable, IPlayer
 
     public override void Hit()
     {
-        base.Hit();
+        Debug.Log("Player Shot");
+        if (CurrentPlaythrough)
+        {
+            Manager.Respawn();
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+            Physics2D.IgnoreCollision(BodyCollider,collision.collider);
+        
+    }
+
+    public virtual void Shoot(bool key)
+    {
+        MyGun.Shoot(key);
+    }
+
+    public void EquipGun(Gun Mygun)
+    {
+        MyGun = Mygun;
+    }
+
+    public void ReInitialize()
+    {
+        MyCP.Commands.Clear();
+        Destroy(MyGun.gameObject);
+        rigidbody.velocity = new Vector3(0,0,0);
+    }
+
+    public void Explode()
+    {
+        GameObject Burst = Instantiate(DyingBurst,transform.position,transform.rotation,null);
     }
 }

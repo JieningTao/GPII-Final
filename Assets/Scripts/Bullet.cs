@@ -8,7 +8,10 @@ public class Bullet : MonoBehaviour
     private float DespawnTimer;
     [SerializeField]
     private float TravelSpeed;
-
+    [SerializeField]
+    private string WhitlistTag;
+    [SerializeField]
+    ContactFilter2D FilterForTargets;
 
     //i am considering setting up an object pool for the bullets
 
@@ -24,6 +27,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         Fly();
+       
     }
 
     private void Fly()
@@ -37,13 +41,27 @@ public class Bullet : MonoBehaviour
         }
         else
             */
-            transform.Translate(transform.right * TravelSpeed * Time.deltaTime);
+
+            transform.Translate(Vector3.right * TravelSpeed * Time.deltaTime);
+        Debug.DrawRay(transform.position, this.transform.right, Color.red);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(this.gameObject);
-        collision.gameObject.GetComponent<Damageable>().Hit();
+        if (!collision.isTrigger)
+        {
+            if (collision.CompareTag(WhitlistTag))
+            {
+            }
+            else
+            {
+                Destroy(this.gameObject);
+                collision.gameObject.GetComponent<Damageable>().Hit();
+            }
+        }
+        
+        
     }
 
 

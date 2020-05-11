@@ -8,5 +8,6 @@ public interface IPlayer
     
     Rigidbody2D rigidbody { get;}
     Transform transform { get; }
-   
+
+    void Shoot(bool key);
 }

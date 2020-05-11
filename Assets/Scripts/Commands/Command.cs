@@ -1,7 +1,7 @@
 ﻿
 public abstract class Command 
 {
-    protected IPlayer Player;
+    public IPlayer Player;
     
 
     public Command(IPlayer _player)
