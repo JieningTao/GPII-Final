@@ -40,7 +40,7 @@ public class Player : Damageable, IPlayer
 
     private InputHandler MyInput;
     private CommandProcessor MyCP;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D RigidBody;
     
 
 
@@ -52,7 +52,7 @@ public class Player : Damageable, IPlayer
     [SerializeField]
     private Gun MyGun;
 
-    Rigidbody2D IPlayer.rigidbody { get => rigidbody; }
+    Rigidbody2D IPlayer.rigidbody { get => RigidBody; }
     float IPlayer.Speed { get { return Speed; }}
     float IPlayer.MaxSpeed { get { return MaxSpeed; } }
     float IPlayer.Jumpforce { get { return JumpForce; } }
@@ -68,7 +68,7 @@ public class Player : Damageable, IPlayer
         }
         else
             CurrentPlaythrough = false;
-        rigidbody = GetComponent<Rigidbody2D>();
+        RigidBody = GetComponent<Rigidbody2D>();
         MyCP = GetComponent<CommandProcessor>();
     }
 
@@ -169,7 +169,7 @@ public class Player : Damageable, IPlayer
         }
         else
         {
-            Destroy(this.gameObject);
+            Explode();
         }
     }
 
@@ -194,11 +194,12 @@ public class Player : Damageable, IPlayer
     {
         MyCP.Commands.Clear();
         Destroy(MyGun.gameObject);
-        rigidbody.velocity = new Vector3(0,0,0);
+        RigidBody.velocity = new Vector3(0,0,0);
     }
 
     public void Explode()
     {
         GameObject Burst = Instantiate(DyingBurst,transform.position,transform.rotation,null);
+        Destroy(gameObject);
     }
 }

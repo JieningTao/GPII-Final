@@ -220,7 +220,10 @@ MonoBehaviour:
   FrontWallDetectTrigger: {fileID: 7919387284510731941}
   BackWallDetectTrigger: {fileID: 7919387284510731940}
   BodyCollider: {fileID: 7919387284510731967}
-  CurrentPlaythrough: 1
+  DyingBurst: {fileID: 736938881762660542, guid: 66a4d2a802dcd414383d8d2ed259231a,
+    type: 3}
+  CurrentPlaythrough: 0
+  Manager: {fileID: 0}
   MyGun: {fileID: 0}
 --- !u!114 &7919387284510731943
 MonoBehaviour:
@@ -234,4 +237,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ef36fa19729964bbb6be5fcf5ce901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyPlayer: {fileID: 7919387284510731936}
+  Automated: 1
+  CommandListSize: 0

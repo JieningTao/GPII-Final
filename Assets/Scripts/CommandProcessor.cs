@@ -40,10 +40,15 @@ public class CommandProcessor : MonoBehaviour
             }
             Commands.Remove(Commands[0]);
         }
+        else
+        {
+            MyPlayer.Explode();
+        }
     }
 
     public void ConfirmCommandsForSelf()
     {
+        Start();//make sure that my player is assigned before assigning them to the commands
         foreach (List<Command> a in Commands)
         {
             foreach (Command b in a)

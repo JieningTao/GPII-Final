@@ -97,7 +97,7 @@ public class Enemy : Damageable
         else
         {
             for(int i = 0; i<5;i++)
-                Shoot(10);
+                Shoot(15);
             AttackCoolDown = 2.5f;
         }
     }

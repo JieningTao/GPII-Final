@@ -22,4 +22,5 @@ public class Sword : Gun
                 collision.GetComponent<Damageable>().Hit();
         }
     }
+
 }

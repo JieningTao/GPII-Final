@@ -12,7 +12,7 @@ public class Shotgun : Gun
         for (int i = 0; i < PelletCount; i++)
         {
             GameObject NewLaser = Instantiate(Bullet, BulletSpawn.position, BulletSpawn.rotation);
-            NewLaser.transform.Rotate(new Vector3(0, 0, Random.Range(0f, 3f)));
+            NewLaser.transform.Rotate(new Vector3(0, 0, Random.Range(0f, 10f)));
         }
 
     }
